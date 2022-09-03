@@ -3,7 +3,7 @@ gameEnded = false;
 gameStatus = "";
 score = 0;
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
 
     // Variables intializing
     game = document.getElementById("game");
@@ -22,21 +22,19 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 }, false);
 
-function chechIfGameStarted () {
+function chechIfGameStarted() {
     return gameStarted;
 }
 
-function checkIfGameEnded () {
+function checkIfGameEnded() {
     return gameEnded;
 }
 
-function startGame () {
-    if (!checkIfGameEnded()) {
-        gameStarted = true;
-        score = 0;
-        statusElement.innerHTML = "Game started ... Score: " + score;
-
-    }
+function startGame() {
+    gameStarted = true;
+    statusElement.innerHTML = "Game started ...";
+    statusElement.style.color = "black";
+    resetBoundaries()
 }
 
 function endGame() {
@@ -49,20 +47,22 @@ function endGame() {
     }
 }
 
-function resetGame () {
-    statusElement.innerHTML = "Begin by moving your mouse over the \"S\".";
+function resetGame() {
+    score = 0;
+    statusElement.innerHTML = "Game started ... Score: " + score;
     statusElement.style.color = "black";
     resetBoundaries();
     gameEnded = false;
+
 }
 
-function mouseOverBoundries () {
+function mouseOverBoundries() {
     if (chechIfGameStarted()) {
         gameLost();
     }
 }
 
-function mouseLeftTheGame () {
+function mouseLeftTheGame() {
     if (chechIfGameStarted()) {
         gameLost();
     }
@@ -80,7 +80,7 @@ function gameLost() {
 function makeBoundariesRed() {
     for (let i = 0; i < boundries.length; i++) {
         if (i != getIndexOfExampleBoundary(boundries)) {
-            boundries[i].style.backgroundColor  = "red";
+            boundries[i].style.backgroundColor = "red";
         }
     }
 }
