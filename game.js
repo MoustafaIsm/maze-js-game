@@ -2,6 +2,8 @@ gameStarted = false;
 gameEnded = false;
 gameStatus = "";
 score = 0;
+level = 1;
+timer = 0;
 
 document.addEventListener("DOMContentLoaded", function () {
 
@@ -31,25 +33,36 @@ function checkIfGameEnded() {
 }
 
 function startGame() {
-    gameStarted = true;
-    statusElement.innerHTML = "Game started ...";
-    statusElement.style.color = "black";
-    resetBoundaries()
+    if (level <= 4) {
+        timer = 60 / level;
+        gameStarted = true;
+        gameEnded = true;
+        statusElement.innerHTML = "Level " + level + " started ... Score: " + score;
+        statusElement.style.color = "black";
+        startTimer(timer);
+        resetBoundaries();
+    }
 }
 
 function endGame() {
     if (chechIfGameStarted()) {
         score += 5
-        statusElement.innerHTML = "You Won ... Score: " + score;
+        if (level < 4) {
+            statusElement.innerHTML = "You Won Level " + level + " ... Score: " + score;
+        } else {
+            statusElement.innerHTML = "You completed the game, click on S to reset ... Score: " + score;
+        }
         statusElement.style.color = "green";
         gameStarted = false;
         gameEnded = true;
+        level++;
     }
 }
 
 function resetGame() {
     score = 0;
-    statusElement.innerHTML = "Game started ... Score: " + score;
+    level = 1;
+    statusElement.innerHTML = "Level " + level + " started ... Score: " + score;
     statusElement.style.color = "black";
     resetBoundaries();
     gameEnded = false;
@@ -101,4 +114,19 @@ function getIndexOfExampleBoundary(b) {
         }
     }
     return -1;
+}
+
+function startTimer(timeLeft) {
+    statusText = statusElement.innerHTML;
+    var downloadTimer = setInterval(function () {
+        if (timeLeft <= 0) {
+            gameLost();
+            clearInterval(downloadTimer);
+        } else if (!checkIfGameEnded() || !chechIfGameStarted()) {
+            clearInterval(downloadTimer);
+        } else {
+            statusElement.innerHTML = statusText + " ... " + timeLeft + " seconds remaining";
+        }
+        timeLeft -= 1;
+    }, 1000);
 }
